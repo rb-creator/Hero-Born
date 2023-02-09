@@ -23,11 +23,13 @@ public class PlayerBehaviour : MonoBehaviour
     public float BulletSpeed = 100f;
 
     private bool _isShooting;
+    private GameBehaviour _gameManager;
 
     private void Start()
     {
         _rb= GetComponent<Rigidbody>();
         _col = GetComponent<CapsuleCollider>();
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameBehaviour>();
     }
 
     void Update()
@@ -87,7 +89,12 @@ public class PlayerBehaviour : MonoBehaviour
 
         return grounded;
     }
-
-
-
+    void OnCollisionEnter(Collision collision)
+    {
+       
+        if (collision.gameObject.name == "Enemy")
+        {
+            _gameManager.HP -= 1;
+        }
+    }
 }
