@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+using System;
+using CustomExtensions;
 
-public class GameBehaviour : MonoBehaviour
+public class GameBehaviour : MonoBehaviour, IManager
 {
     public int MaxItems = 4;
 
@@ -15,10 +18,25 @@ public class GameBehaviour : MonoBehaviour
     public Button WinButton;
     public Button LossButton;
 
+    private string _state;
+    public string State
+    {
+        get { return _state; }
+        set { _state = value; }
+    }
+
     void Start()
     {
+        Initialize();
         ItemText.text += _itemsCollected;
         HealthText.text += _playerHP;
+    }
+
+    public void Initialize()
+    {
+        _state = "Game Manager initialized..";
+        _state.FancyDebug();
+        Debug.Log(_state);
     }
 
     public void UpdateScene(string updatedText)
@@ -76,9 +94,6 @@ public class GameBehaviour : MonoBehaviour
 
     public void RestartScene()
     {
-
-        SceneManager.LoadScene(0);
-
-        Time.timeScale = 1f;
+        Utilities.RestartLevel(0);
     }
 }
